@@ -1,16 +1,36 @@
-import productSchema from "../models/productSchema.js"
+import ProductSchema from "../models/productSchema.js"
 
-const getAll = async (req, res) =>{
-    const products = await productSchema.find()
-        if (!products) {
-            res.status(500).send({
-                statusCode:500,
-                message: err.message,
-            });
+const getAllP =  (req, res) =>{
+    ProductSchema.find((err, products) =>{
+        if (err){
+            res.status(500).send({message: err.message})
         }
         res.status(200).send(products)
+    })
+       
     }
 
+    const getOne =  (req, res) =>{
+        ProductSchema.findById(req.params.id, (err,products) =>{
+            if (err){
+                res.status(500).send({message: err.message})
+            }
+            res.status(200).send(products)
+        })
+           
+        }
+
+ /*   const getAll =  (req, res) => {
+        UserSchema.find((err,users) =>{
+          if(err){
+            res.status(500).send({message: err.message})
+          }
+          res.status(200).send(users)
+          
+          })     
+      };
+*/
 export default {
-    getAll,
+    getAllP,
+    getOne,
 }

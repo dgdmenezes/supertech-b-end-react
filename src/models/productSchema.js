@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 // Definindo o esquema (schema) do produto de tecnologia
 const productSchema = new mongoose.Schema(
     {
-    id:mongoose.Schema.Types.ObjectId,
+    id: mongoose.Schema.Types.ObjectId,
     name: {
         type: String,
         required: true,
@@ -59,6 +59,4 @@ const productSchema = new mongoose.Schema(
 );
 
 // Criando o modelo de Produto de Tecnologia usando o esquema definido
-export default {
-    productSchema
-}
+export default mongoose.model("product", productSchema);
