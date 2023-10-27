@@ -1,11 +1,39 @@
 import ProductSchema from "../models/productSchema.js"
 
 const getAllP =  (req, res) =>{
-    ProductSchema.find((err, products) =>{
+    ProductSchema.aggregate([
+        {$match:{}},
+    
+    ]).exec((err, products) =>{
         if (err){
             res.status(500).send({message: err.message})
         }
         res.status(200).send(products)
+    })
+}
+const getCountProducts = (req,res) =>{
+    ProductSchema.aggregate([
+        {$count:"productsCount"}
+    ]).exec((err, counter)=>{
+        if(err){
+            res.status(500).send({message:err.message})
+        }
+        res.status(200).send(counter)
+    })
+}
+
+const getIndexHome =  (req, res) =>{
+    ProductSchema.aggregate([
+        {$skip:parseInt(req.params.skip)},
+        {$limit:parseInt(req.params.limit)},
+        
+    
+    ]).exec((err, products) =>{
+        if (err){
+            res.status(500).send({message: err.message})
+        }
+        res.status(200).send(products)
+        
     })
        
     }
@@ -33,4 +61,6 @@ const getAllP =  (req, res) =>{
 export default {
     getAllP,
     getOne,
+    getIndexHome,
+    getCountProducts
 }
