@@ -27,8 +27,8 @@ const getCountProducts = (req,res) =>{
 
 const getIndexHome =  (req, res) =>{
     ProductSchema.aggregate([
-        {$skip:parseInt(req.params.skip)},
-        {$limit:parseInt(req.params.limit)},
+        {$skip:parseInt(req.query.skip)},
+        {$limit:parseInt(req.query.limit)},
         
     
     ]).exec((err, products) =>{
