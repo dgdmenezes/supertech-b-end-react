@@ -22,7 +22,6 @@ const getUser =  (req, res) =>{
     }
   } )
   
-
   }
 
 const createUser = async(req, res) =>{

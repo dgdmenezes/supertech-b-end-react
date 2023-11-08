@@ -25,10 +25,24 @@ const productSchema = new mongoose.Schema(
         type: Number,
         required: true,
     },
+    
     image: {
-        type: String, // Você pode armazenar a URL da imagem ou o caminho do arquivo.
-        required: true,
+        type: String,
+        required:true,
     },
+    image2: {
+        type: String,
+        required:false,
+    },
+    image3: {
+        type: String,
+        required:false,
+    },
+    image4: {
+        type: String,
+        required:false,
+    },
+
     brand: String,
     model: String,
     reviews: [
@@ -38,10 +52,11 @@ const productSchema = new mongoose.Schema(
             ref: 'Usuario', // Referência ao modelo de usuário, se desejar rastrear quem fez a avaliação.
         },
         texto: String,
-        classificacao: Number,
+        rating: Number,
         },
     ],
-    specs: {
+    specs: [
+        {
         processador: String,
         memoriaRAM: String,
         armazenamento: String,
@@ -53,7 +68,8 @@ const productSchema = new mongoose.Schema(
         classificacao: String,
         idiomas:String,
         itensInclusos:String
-    },
+    }
+       ]   ,
 },
 {timestamp: true},
 );
