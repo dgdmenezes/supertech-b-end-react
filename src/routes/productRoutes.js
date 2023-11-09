@@ -5,7 +5,8 @@ const  router = express.Router()
 
 
 router.get("/count", controllers.getCountProducts)
-router.get("/find/:category?", controllers.productFind)
+router.get("/find/find?", controllers.productFind)
+router.get("/find/count?", controllers.productFindCount)
 router.get("/index/index?", controllers.getIndexHome)
 router.get("/teste2/teste", controllers.testController2)
 router.post("/create", controllers.createProdutct)

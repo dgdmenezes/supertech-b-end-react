@@ -25,8 +25,9 @@ const getCountProducts = (req,res) =>{
     })
 }
 
-const getIndexHome =  (req, res) =>{
+const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
     ProductSchema.aggregate([
+        // {$match:{}},
         {$skip:parseInt(req.query.skip)},
         {$limit:parseInt(req.query.limit)},
         
@@ -44,21 +45,56 @@ const getIndexHome =  (req, res) =>{
 
     const productFind =  (req, res) =>{
         ProductSchema.aggregate([
-            {$match:
-                {category:req.params.category},
+                {
+                    $match:(
+                    {$or:[
+                        {
+                            category:req.query.category, 
+                        },
+                        {
+                            stock:parseInt(req.query.stock),
+                        }
+                        ]
+                })},
+                {$limit:parseInt(req.query.limit)},
+                {$skip:parseInt(req.query.skip)}
+                        
+            ]).exec((err, products) =>{
+                if (err){
+                    res.status(500).send({message: err.message})
+                }
+                res.status(200).send(products)
+                console.log(req.query, products.length);
                 
-        },
-                    
-        ]).exec((err, products) =>{
-            if (err){
-                res.status(500).send({message: err.message})
-            }
-            res.status(200).send(products)
-            console.log(products.length);
-            
-        })
-           
+                
+            })
         }
+
+        const productFindCount =  (req, res) =>{
+            ProductSchema.aggregate([
+                    {
+                        $match:(
+                        {$or:[
+                            {
+                                category:req.query.category, 
+                            },
+                            {
+                                stock:parseInt(req.query.stock),
+                            }
+                            ]
+                    })},
+                    {$count:"counter"}
+                            
+                ]).exec((err, products) =>{
+                    if (err){
+                        res.status(500).send({message: err.message})
+                    }
+                    res.status(200).send(products)
+                    console.log(req.query);
+                    
+                    
+                })
+            }
 
     
 
@@ -157,5 +193,6 @@ const getIndexHome =  (req, res) =>{
     getCountProducts,
     createProdutct,
     productFind,
+    productFindCount,
     testController2,
 }
