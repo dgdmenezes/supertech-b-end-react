@@ -15,4 +15,6 @@ app.use("/users", routes)
 import productRoutes from "./routes/productRoutes.js"
 app.use("/products", productRoutes)
 
+import addressRoutes from "./routes/addressRoutes.js"
+app.use("/address", addressRoutes)
 export default app;
