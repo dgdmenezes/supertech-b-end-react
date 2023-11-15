@@ -26,21 +26,22 @@ const getUser =  (req, res) =>{
 
 const createUser = async(req, res) =>{
 
-const hashedPassword = bcrypt.hashSync(req.body.password, 10) //10 é salt
-req.body.password = hashedPassword;
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10) //10 é salt
+  req.body.password = hashedPassword;
 
-try{
+  try{
 
-const newUser = UserSchema(req.body);
+  const newUser = UserSchema(req.body);
 
-const savedUser = await newUser.save()
+  const savedUser = await newUser.save()
 
-res.status(201).send({
-  message:"usuário cadastrado com sucesso",
-  statusCode: 201,
-  data: savedUser,
-});
-}catch(err){
+  res.status(201).send({
+    message:"usuário cadastrado com sucesso",
+    statusCode: 201,
+    data: savedUser,
+  });
+  }
+  catch(err){
   console.log("erro em"+ err);
 }
 }

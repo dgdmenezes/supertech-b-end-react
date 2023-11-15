@@ -17,4 +17,8 @@ app.use("/products", productRoutes)
 
 import addressRoutes from "./routes/addressRoutes.js"
 app.use("/address", addressRoutes)
+
+import puchaseRoutes from "./routes/puchaseRoutes.js"
+app.use("/purchase", puchaseRoutes)
+
 export default app;
