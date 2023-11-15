@@ -59,7 +59,7 @@ const updateAddress = async (req, res) =>{
     try{
         const updatedAddress = await addressSchema.findByIdAndUpdate(req.params.id, req.body, {new:true});
 
-    if(!updatedUser){
+    if(!updatedAddress){
         return res.status(404).json({message:"404 - Not founded"})
     }
         res.json({message:"endereço atualizado com sucesso", updatedAddress});

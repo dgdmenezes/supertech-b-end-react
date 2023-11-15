@@ -42,7 +42,12 @@ const productSchema = new mongoose.Schema(
         type: String,
         required:false,
     },
-
+    tags: [
+        {
+        type: String,
+        required:false,
+        }
+        ],
     brand: String,
     model: String,
     reviews: [

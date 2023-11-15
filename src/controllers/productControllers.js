@@ -135,13 +135,7 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
             
         })
         
-        /*return res.json({
-           message:"Hello World",
-           name:req.query.name,
-           age:req.query.age,
-           city:req.query.city,
-           country:req.query.country
-        })*/
+      
         
 }
         
@@ -159,6 +153,8 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
             image2,
             image3,
             image4,
+            brand,
+            model,
             specs
         } = req.body;
         
@@ -173,7 +169,10 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
             image2,
             image3,
             image4,
-            specs
+            brand,
+            model,
+            specs,
+            tags:[req.body.name,  req.body.category, req.body.brand, req.body.model], 
         })
 
         const newProduct = await product.save();
@@ -194,5 +193,4 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
     createProdutct,
     productFind,
     productFindCount,
-    testController2,
-}
+ }
