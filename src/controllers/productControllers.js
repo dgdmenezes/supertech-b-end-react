@@ -172,7 +172,7 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
             brand,
             model,
             specs,
-            tags:[req.body.name,  req.body.category, req.body.brand, req.body.model], 
+            tags:[req.body.category, req.body.brand, req.body.model], 
         })
 
         const newProduct = await product.save();

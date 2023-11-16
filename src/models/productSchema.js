@@ -48,8 +48,15 @@ const productSchema = new mongoose.Schema(
         required:false,
         }
         ],
-    brand: String,
-    model: String,
+    brand: {
+        type:String,
+        required:true,
+    },
+
+    model:{
+        type: String,
+        required:true,
+    },
     reviews: [
         {
         user: {
