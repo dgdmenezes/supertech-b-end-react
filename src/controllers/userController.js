@@ -43,6 +43,14 @@ const createUser = async(req, res) =>{
   }
   catch(err){
   console.log("erro em"+ err);
+  res.status(400).json(
+    {message:"Ocorreu um erro, não foi possível cadastrar",
+    statusCode:400,
+    error:{
+      code:400,
+      message:"Faltou algum item a ser preenchido"}
+    }
+  )
 }
 }
 
@@ -57,7 +65,7 @@ const updateUser = async (req, res) =>{
 })
 
 } catch (err) {
-    res.status(500).send({message:err.message});
+    res.status(500).send({message:"err.message"});
     console.log("erro em:"+err);
   }
 }

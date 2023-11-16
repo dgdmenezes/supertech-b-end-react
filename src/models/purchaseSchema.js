@@ -28,6 +28,8 @@ const purchaseSchema = new mongoose.Schema(
         type:Number,
         required:true,
     },
-}, {timestamp: true})
+}, 
+{timestamp: true}
+);
 
 export default mongoose.model("purchase", purchaseSchema)
