@@ -12,6 +12,7 @@ const login = async (req, res) => {
                 statusCode:401
             })
         }
+        
         const  validPassword = bcrypt.compareSync(
             req.body.password,
             user.password
@@ -27,8 +28,14 @@ const login = async (req, res) => {
             algorithm: "HS256",
             expiresIn: "15m"
         }
-
-        const token = jwt.sign({name: user.name}, process.env.SECRET, tokenOptions);
+        
+        const payload = {
+            id:user._id,
+            name:user.name,
+            email:user.email,
+            cpf:user.cpf
+        }
+        const token = jwt.sign(payload, process.env.SECRET, tokenOptions);
         
             res.status(200).send({
             token:`${token}`
@@ -62,11 +69,12 @@ export const verifyToken = async (token) => {
     return new Promise((resolve, reject) => {
       jwt.verify(token, process.env.SECRET, (err, decodedData) => {
         if (err){
-            console.log("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
             console.log("erro:",err);
             return reject(err);
         } 
+        console.log(decodedData)
         return resolve(decodedData);
+        
       });
     });
   }
