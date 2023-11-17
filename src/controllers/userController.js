@@ -1,5 +1,6 @@
 import UserSchema from "../models/userSchema.js";
 import bcrypt from "bcrypt"
+import {verifyToken} from "./authController.js"
 
 const getAll =  (req, res) => {
   UserSchema.find((err,users) =>{
@@ -9,6 +10,26 @@ const getAll =  (req, res) => {
     res.status(200).send(users)
     
     })     
+};
+
+const getAllToken =  async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+   
+    await verifyToken(token)
+ 
+      
+   UserSchema.find((err,users) =>{
+     if(err){
+       res.status(500).send({message: err.message})
+     }
+     res.status(200).send(users)
+     
+     })       
+  } catch (error) {
+    return res.status(401).send({message:error.message})
+  }
+  
 };
 
 const getUser =  (req, res) =>{
@@ -87,6 +108,7 @@ const deleteUser = async (req,res) =>{
 
 export default {
   getAll,
+  getAllToken,
   getUser,
   createUser,
   updateUser,

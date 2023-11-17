@@ -29,14 +29,49 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign({name: user.name}, process.env.SECRET, tokenOptions);
-
-        res.status(200).send({
+        
+            res.status(200).send({
             token:`${token}`
         });
 
     })
 }
 
+// export const verifyToken = (token) =>{
+//     return async (req, res) => {
+//     jwt.verify(token, process.env.SECRET, (err, decoded) =>{
+//         if(err){
+//             console.log("Token inválido", err);
+//             res.status(401).send({
+//                 message:"Token inválido. Acesso negado",
+//                 err
+//             })
+//         }else{
+//             console.log("Token Valido. Decodificado", decoded);
+//             res.status(200).send({
+//                 message:"Token Válido. Decodificado",
+//                 decoded
+                
+//             })
+//         }
+//     })
+// }
+// }
+
+export const verifyToken = async (token) => {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, process.env.SECRET, (err, decodedData) => {
+        if (err){
+            console.log("<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>");
+            console.log("erro:",err);
+            return reject(err);
+        } 
+        return resolve(decodedData);
+      });
+    });
+  }
+
 export default{
     login,
+    verifyToken,
 }
