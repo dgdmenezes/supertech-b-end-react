@@ -17,17 +17,18 @@ const getAllToken =  async (req, res) => {
     const token = req.headers.authorization.split(" ")[1];
    
     await verifyToken(token)
- 
+
       
    UserSchema.find((err,users) =>{
      if(err){
-       res.status(500).send({message: err.message})
+       res.status(500).send({error: err.message})
      }
      res.status(200).send(users)
      
      })       
   } catch (error) {
-    return res.status(401).send({message:error.message})
+    res.status(403).send({error:error.message})
+    console.error("erro", error);
   }
   
 };

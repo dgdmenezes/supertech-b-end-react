@@ -3,13 +3,15 @@ import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken';
 
 
+
 const login = async (req, res) => {
     UserSchema.findOne({email:req.body.email}, (err, user) =>{
         if(!user){
-            return res.status(401).send({
+            return res.status(403).send({
+                error:"erro",
                 message:"Usuário e / ou senha não encontrados",
                 email:`${req.body.email}`,
-                statusCode:401
+                statusCode:402
             })
         }
         
@@ -18,7 +20,7 @@ const login = async (req, res) => {
             user.password
         );
         if (!validPassword){
-            return res.status(401).send({
+            return res.status(403).send({
                 message:"Usuário e / ou senha não encontrados",
                 statusCode:401
             })
@@ -69,17 +71,19 @@ export const verifyToken = async (token) => {
     return new Promise((resolve, reject) => {
       jwt.verify(token, process.env.SECRET, (err, decodedData) => {
         if (err){
-            console.log("erro:",err);
-            return reject(err);
-        } 
+            console.log("não autorizado");
+            reject(err);
+        } else{
+
+        
         console.log(decodedData)
         return resolve(decodedData);
-        
+    }
       });
     });
   }
 
 export default{
     login,
-    verifyToken,
+    
 }
