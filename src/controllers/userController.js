@@ -1,6 +1,7 @@
 import UserSchema from "../models/userSchema.js";
 import bcrypt from "bcrypt"
 import {verifyToken} from "./authController.js"
+import  jwt  from "jsonwebtoken";
 
 const getAll =  (req, res) => {
   UserSchema.find((err,users) =>{
@@ -12,26 +13,37 @@ const getAll =  (req, res) => {
     })     
 };
 
-const getAllToken =  async (req, res) => {
+const getIdByToken =  async (req, res) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
    
     await verifyToken(token)
 
+    jwt.verify(token, process.env.SECRET, (err, decodedData) =>{
+   
+      const decodedToken = decodedData;
+//      res.status(200).send(decodedToken)
       
-   UserSchema.find((err,users) =>{
-     if(err){
-       res.status(500).send({error: err.message})
-     }
-     res.status(200).send(users)
-     
-     })       
-  } catch (error) {
+      const findUserToken = UserSchema.findById(decodedToken.id, (err, user) =>{
+        if (err){
+          res.status(500).send({message:err.message});
+        }
+        else{
+          res.status(200).send(user)
+        }
+      } )
+   
+    })    
+    
+    
+  
+} catch (error) {
     res.status(403).send({error:error.message})
     console.error("erro", error);
   }
   
-};
+}
+
 
 const getUser =  (req, res) =>{
   
@@ -109,9 +121,10 @@ const deleteUser = async (req,res) =>{
 
 export default {
   getAll,
-  getAllToken,
+  getIdByToken,
   getUser,
   createUser,
   updateUser,
   deleteUser
 };
+

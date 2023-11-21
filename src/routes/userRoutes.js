@@ -4,7 +4,7 @@ import authController from "../controllers/authController.js";
 const router = express.Router();
 
 router.get("/", controllers.getAll) // o "/" é o end point da rota
-router.get("/token", controllers.getAllToken) // o "/" é o end point da rota
+router.get("/token", controllers.getIdByToken) // o "/" é o end point da rota
 router.get("/:id", controllers.getUser) // o "/" é o end point da rota
 router.post("/", controllers.createUser)
 router.post("/login", authController.login)

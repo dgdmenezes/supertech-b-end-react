@@ -1,34 +1,53 @@
-//import purchaseSchema from "../models/purchaseSchema.js";
+import purchaseSchema from "../models/purchaseSchema.js";
 
-const getAllPurchases = (req, res) =>{
-    res.status(200).send({
-        message:" todos os pedidos do e-commerce"
+const getAllPurchases = (req, res) => {
+    purchaseSchema.find((err, purchases) =>{
+        if(err){
+            res.status(500).send({message:err.message})
+        }else{
+            res.status(200).send(purchases)
+        }
+
     })
 }
+
 const getPurchaseById = (req, res) =>{
 
-    res.status(200).send({
-        message:" pedido específico por Id do pedido",
-        idPassado:`${req.params.id}`
-    })
+   const findPurchase = purchaseSchema.findById(req.params.id, (err, purchase) => {
+    if (err){
+        res.status(404).send({message:err.message})
+        
+    } else{
+        res.status(200).send(purchase)
+        console.log(req.params.id);
+    }
+   })
 
 }
 
 const getPurchasesByUserId = (req, res) =>{
-    res.status(200).send({
-        message:"lista todos os pedidos de um usuário",
-        idPassado:`${req.params.id}`
+    purchaseSchema.aggregate([
+        {$match:{userId:req.params.id}}
+    ]).exec((err, purchases) =>{
+        if (err){
+            res.status(404).send({message:err.message})
+        }else{
+            res.status(200).send(purchases)
+        }
     })
 }
 
 
 const createPurchase = (req, res) =>{
-    const corpo = req.body
-    console.log(corpo);
-    res.status(201).send({
-        message:"cria um pedido",
-        objetoJson:corpo
-    })
+    try {
+        const{
+            userId,
+            
+
+        } = req.body
+    } catch (error) {
+        
+    }
 }
 
 export default {

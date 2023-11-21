@@ -24,6 +24,19 @@ const purchaseSchema = new mongoose.Schema(
             },
         }
     ],
+    tracking:{
+        type:String,
+        required:true,
+    },
+    paymentID:{
+        type:String,
+        required:true,
+    },
+    paymentMethod:{
+        type:String,
+        enum:["boleto", "creditCard", "pix"],
+        required:true,
+    },
     totalPrice:{
         type:Number,
         required:true,

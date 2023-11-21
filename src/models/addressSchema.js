@@ -23,6 +23,10 @@ const addressSchema = new mongoose.Schema(
             type:String,
             required:false,
         },
+        complement:{
+            type:String,
+            required:false
+        },        
         neighborhood:{
             type:String,
             required:true,
