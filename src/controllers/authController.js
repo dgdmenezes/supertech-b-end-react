@@ -28,7 +28,7 @@ const login = async (req, res) => {
 
         const tokenOptions = {
             algorithm: "HS256",
-            expiresIn: "15m"
+            expiresIn: "30s"
         }
         
         const payload = {
@@ -46,26 +46,6 @@ const login = async (req, res) => {
     })
 }
 
-// export const verifyToken = (token) =>{
-//     return async (req, res) => {
-//     jwt.verify(token, process.env.SECRET, (err, decoded) =>{
-//         if(err){
-//             console.log("Token inválido", err);
-//             res.status(401).send({
-//                 message:"Token inválido. Acesso negado",
-//                 err
-//             })
-//         }else{
-//             console.log("Token Valido. Decodificado", decoded);
-//             res.status(200).send({
-//                 message:"Token Válido. Decodificado",
-//                 decoded
-                
-//             })
-//         }
-//     })
-// }
-// }
 
 export const verifyToken = async (token) => {
     return new Promise((resolve, reject) => {

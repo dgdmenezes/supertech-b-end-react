@@ -65,8 +65,28 @@ const createUser = async(req, res) =>{
 
   try{
 
-  const newUser = UserSchema(req.body);
+  const {
+    email,
+    password,
+    name,
+    gender,
+    birthDate,
+    cpf,
+    phoneNumber,
+    //roles
+  }= req.body;
 
+  const newUser = new UserSchema({
+    email,
+    password,
+    name,
+    gender,
+    birthDate,
+    cpf,
+    phoneNumber,
+    roles:"user"
+  })
+  
   const savedUser = await newUser.save()
 
   res.status(201).send({
