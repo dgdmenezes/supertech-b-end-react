@@ -33,9 +33,8 @@ const login = async (req, res) => {
         
         const payload = {
             id:user._id,
-            name:user.name,
             email:user.email,
-            cpf:user.cpf
+            role:user.roles
         }
         const token = jwt.sign(payload, process.env.SECRET, tokenOptions);
         
