@@ -52,9 +52,9 @@ const postAddress = async (req, res) =>{
 
     const newAddress = await nAddress.save();
     
-    let addressId = newAddress._id
+    const addressId = newAddress._id
 
-    userSchema.findByIdAndUpdate(userId, {$push: {addresses:addressId} }, (error, user)=>{
+    await userSchema.findByIdAndUpdate(userId, {$push: {addresses:addressId} }, (error, user)=>{
         if (error){
             console.log(error)
         } else {
@@ -77,28 +77,39 @@ const updateAddress = async (req, res) =>{
         const updatedAddress = await addressSchema.findByIdAndUpdate(req.params.id, req.body, {new:true});
 
     if(!updatedAddress){
-        return res.status(404).json({message:"404 - Not founded"})
+        return res.status(404).send({message:"404 - Not founded"})
     }
         res.json({message:"endereço atualizado com sucesso", updatedAddress});
     }catch(err){
         console.log(err);
-        res.status(500).json({messsage: "500 - erro interno do servidor"})
+        res.status(500).send({messsage: "500 - erro interno do servidor"})
     }
 }
 const deleteAddress = async (req,res) =>{
     try {
         const deletedAddress = await addressSchema.findByIdAndDelete(req.params.id)
-
+        
         if(!deletedAddress){
             return res.status(404).json({message:"404 - not founded"})
         }
 
-        res.status(200).json({message: "Endereço excluído", deletedAddress})
+        res.status(200).send({message: "Endereço excluído", deletedAddress})
+        const deletedAddressId = deletedAddress._id
+        console.log(deletedAddress.userId)
+
+        await userSchema.findByIdAndUpdate(deletedAddress.userId, {$pull: {addresses:deletedAddressId}}, {new:true} , (error, updatedUser)=>{
+            if (error){
+                console.log(error)
+            } else {
+                console.log(updatedUser);
+            }
+    
+        })
 
         
     } catch (err) {
         console.log(err);
-        res.status(500).json({message:"500 - Internal server error - Erro interno do servidor"})
+        res.status(500).send({message:"500 - Internal server error - Erro interno do servidor"})
     }
     
     
