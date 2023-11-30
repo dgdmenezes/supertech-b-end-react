@@ -1,4 +1,5 @@
 import addressSchema from "../models/addressSchema.js";
+import userSchema from "../models/userSchema.js"
 
 const getAllAddress = (req, res) =>{
     addressSchema.find((err, address) =>{
@@ -50,6 +51,20 @@ const postAddress = async (req, res) =>{
     })
 
     const newAddress = await nAddress.save();
+    
+    let addressId = newAddress._id
+
+    userSchema.findByIdAndUpdate(userId, {$push: {addresses:addressId} }, (error, user)=>{
+        if (error){
+            console.log(error)
+        } else {
+            console.log(user);
+        }
+
+    })
+    
+    
+
     res.status(201).json(newAddress)
     } catch(err){
         console.log("erro ao criar o esquema do endereço", err);

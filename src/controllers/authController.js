@@ -11,7 +11,7 @@ const login = async (req, res) => {
                 error:"erro",
                 message:"Usuário e / ou senha não encontrados",
                 email:`${req.body.email}`,
-                statusCode:402
+                statusCode:403
             })
         }
         
@@ -28,13 +28,13 @@ const login = async (req, res) => {
 
         const tokenOptions = {
             algorithm: "HS256",
-            expiresIn: "30s"
+            expiresIn: "300s"
         }
         
         const payload = {
             id:user._id,
             email:user.email,
-            role:user.roles
+            role:user.role
         }
         const token = jwt.sign(payload, process.env.SECRET, tokenOptions);
         

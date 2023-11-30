@@ -84,7 +84,7 @@ const createUser = async(req, res) =>{
     birthDate,
     cpf,
     phoneNumber,
-    roles:"user"
+    role:"user"
   })
   
   const savedUser = await newUser.save()
