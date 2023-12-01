@@ -53,23 +53,19 @@ const postAddress = async (req, res) =>{
     const newAddress = await nAddress.save();
     
     const addressId = newAddress._id
-
-    await userSchema.findByIdAndUpdate(userId, {$push: {addresses:addressId} }, (error, user)=>{
-        if (error){
-            console.log(error)
-        } else {
-            console.log(user);
-        }
-
-    })
+    const addressUserId = newAddress.userId
+//até aqui tá sussa
+    const updateUser = await userSchema.findByIdAndUpdate(addressUserId, {$push: {addresses:addressId}}, {new:true}).exec()
     
-    
-
-    res.status(201).json(newAddress)
-    } catch(err){
-        console.log("erro ao criar o esquema do endereço", err);
-        res.status(500).json({error:"Erro ao criar o esquema do endereço: ", err})
+    res.status(201).send({
+        address:newAddress,
+        user: `${addressUserId} atualizado`}
+        );
+    } catch(error){
+        res.status(401).send({error:error.message});
     }
+    
+
 }
 
 const updateAddress = async (req, res) =>{
@@ -87,32 +83,25 @@ const updateAddress = async (req, res) =>{
 }
 const deleteAddress = async (req,res) =>{
     try {
-        const deletedAddress = await addressSchema.findByIdAndDelete(req.params.id)
+        const addressId = req.params.id
+        const deletedAddress = await addressSchema.findByIdAndDelete(addressId)
         
-        if(!deletedAddress){
-            return res.status(404).json({message:"404 - not founded"})
+        if(deletedAddress){
+            const userId = deletedAddress.userId
+            await userSchema.findByIdAndUpdate(userId, {$pull: {addresses:addressId}}, {new:true}).exec()
+
+            res.status(200).send(
+                {
+                    deletedAddress,
+                    message:`User ${userId} atualizado com exclusão do registro address ${addressId}`                    
+                })
+        }else{
+            res.status(404).send({message:"404- Not found - Endereço não encontrado"})
         }
 
-        res.status(200).send({message: "Endereço excluído", deletedAddress})
-        const deletedAddressId = deletedAddress._id
-        console.log(deletedAddress.userId)
-
-        await userSchema.findByIdAndUpdate(deletedAddress.userId, {$pull: {addresses:deletedAddressId}}, {new:true} , (error, updatedUser)=>{
-            if (error){
-                console.log(error)
-            } else {
-                console.log(updatedUser);
-            }
-    
-        })
-
-        
-    } catch (err) {
-        console.log(err);
-        res.status(500).send({message:"500 - Internal server error - Erro interno do servidor"})
+    }catch(error){
+        res.status(500).send({message:"Internal Error, erro interno"})
     }
-    
-    
 }
 
 export default {
