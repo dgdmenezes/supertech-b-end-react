@@ -62,6 +62,7 @@ const postAddress = async (req, res) =>{
         user: `${addressUserId} atualizado`}
         );
     } catch(error){
+        console.log(error);
         res.status(401).send({error:error.message});
     }
     
@@ -73,6 +74,7 @@ const updateAddress = async (req, res) =>{
         const updatedAddress = await addressSchema.findByIdAndUpdate(req.params.id, req.body, {new:true});
 
     if(!updatedAddress){
+        
         return res.status(404).send({message:"404 - Not founded"})
     }
         res.json({message:"endereço atualizado com sucesso", updatedAddress});

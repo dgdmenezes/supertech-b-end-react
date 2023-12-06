@@ -95,7 +95,33 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                     
                 })
             }
-
+            
+            const searchBarProductFind =  (req, res) =>{
+                ProductSchema.aggregate([
+                        {
+                            $match:(
+                                {
+                                tags:{
+                                        $regex:req.query.tags,
+                                        $options:"i",
+                                    }   
+                                }
+                            
+                        )},
+                        {$limit:parseInt(req.query.limit)},
+                        
+                        
+                                
+                    ]).exec((err, products) =>{
+                        if (err){
+                            res.status(500).send({message: err.message})
+                        }
+                        res.status(200).send(products)
+                        console.log(req.query, products.length);
+                        
+                        
+                    })
+                }
     
 
     const getOne =  (req, res) =>{
@@ -108,37 +134,10 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
            
         }
     
-    const testController2 = (req, res) => {
-        console.log(req.query)
-        ProductSchema.aggregate([
-            {
-                $match:(
-                {$and:[
-                    {
-                        category:req.query.category, 
-                    },
-                    {
-                        stock:parseInt(req.query.stock),
-                    }
-                    ]
-            })},
-            {$limit:parseInt(req.query.limit)},
-            {$skip:parseInt(req.query.skip)}
-                    
-        ]).exec((err, products) =>{
-            if (err){
-                res.status(500).send({message: err.message})
-            }
-            res.status(200).send(products)
-            console.log(req.query);
             
-            
-        })
-        
       
         
-}
-        
+      
     
 
     const createProdutct = async (req, res) =>{
@@ -193,4 +192,5 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
     createProdutct,
     productFind,
     productFindCount,
+    searchBarProductFind,
  }
