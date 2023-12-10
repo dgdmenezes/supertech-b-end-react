@@ -96,8 +96,8 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                 })
             }
             
-            const searchBarProductFind =  (req, res) =>{
-                ProductSchema.aggregate([
+        const searchBarProductFind =  (req, res) =>{
+            ProductSchema.aggregate([
                         {
                             $match:(
                                 {
@@ -109,6 +109,7 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                             
                         )},
                         {$limit:parseInt(req.query.limit)},
+                        {$skip:parseInt(req.query.skip)},
                         
                         
                                 
@@ -121,8 +122,34 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                         
                         
                     })
-                }
+            }
     
+    const searchBarProductFindCount = (req, res) =>{
+        ProductSchema.aggregate([
+            {
+                $match:(
+                    {
+                    tags:{
+                            $regex:req.query.tags,
+                            $options:"i",
+                        }   
+                    }
+                
+            )},
+            {$count:"counter"},                       
+            
+                    
+        ]).exec((err, products) =>{
+            if (err){
+                res.status(500).send({message: err.message})
+            }
+            res.status(200).send(products)
+            console.log(req.query, products.length);
+            
+            
+        })
+    }
+                
 
     const getOne =  (req, res) =>{
         ProductSchema.findById(req.params.id, (err,products) =>{
@@ -193,4 +220,5 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
     productFind,
     productFindCount,
     searchBarProductFind,
+    searchBarProductFindCount,
  }
