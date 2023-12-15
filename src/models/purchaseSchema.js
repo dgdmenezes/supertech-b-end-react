@@ -3,38 +3,63 @@ const purchaseSchema = new mongoose.Schema(
 {
     id:mongoose.Schema.Types.ObjectId,
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User", 
+        type: String,
         required:true,
     },
     products:[
         {
-            product:{
-                type:mongoose.Schema.Types.ObjectId,
-                ref:"Product",
+            productID:{
+                type: String,
                 required:true,
             },
-            quantity:{
+            productQt:{
                 type:Number,
                 required:true,
             },
-            price:{
+            productPrice:{
                 type:Number,
                 required:true,
             },
-        }
+            productDescription:{
+                type:String,
+                required:true,
+            },
+            productImage:{
+                type:String,
+                required:true
+            }
+        }, 
+
     ],
+    addressForShippingID:{
+        type:String,
+        required:false,
+    },
     tracking:{
         type:String,
-        required:true,
+        required:false,
     },
     paymentID:{
         type:String,
-        required:true,
+        required:false,
     },
     paymentMethod:{
         type:String,
-        enum:["boleto", "creditCard", "pix"],
+        enum:["boleto", "card"],
+        required:false,
+    },
+    paymentStatus:{
+        type:String,
+        enum:["pendingPayment", "paymentError", "paymentCompleted"], 
+        default: "pendingPayment"
+    }
+    ,
+    subTotalPrice:{
+        type:Number,
+        required:true,
+    },
+    shippingPrice:{
+        type:Number,
         required:true,
     },
     totalPrice:{

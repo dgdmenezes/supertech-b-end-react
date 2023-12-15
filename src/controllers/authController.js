@@ -28,7 +28,7 @@ const login = async (req, res) => {
 
         const tokenOptions = {
             algorithm: "HS256",
-            expiresIn: "300s"
+            expiresIn: "10m"
         }
         
         const payload = {

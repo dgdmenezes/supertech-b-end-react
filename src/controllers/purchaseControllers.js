@@ -38,15 +38,33 @@ const getPurchasesByUserId = (req, res) =>{
 }
 
 
-const createPurchase = (req, res) =>{
-    try {
+const createPurchase = async (req, res) =>{
+    try {      
+        console.log(req.body);
+        
+
         const{
             userId,
-            
-
+            products,
+            shippingPrice,
+            subTotalPrice,
+            totalPrice,
         } = req.body
-    } catch (error) {
+
+        const newPurchase = new purchaseSchema({
+            userId,
+            products,
+            shippingPrice,
+            subTotalPrice,
+            totalPrice,
+        })
+
+        const savedPurchase = await newPurchase.save()
         
+        res.status(201).send(savedPurchase)
+    } catch (err) {
+        res.status(500).send({err})
+        console.log(err);
     }
 }
 
