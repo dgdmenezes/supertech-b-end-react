@@ -6,6 +6,7 @@ const purchaseSchema = new mongoose.Schema(
         type: String,
         required:true,
     },
+    
     products:[
         {
             productID:{
@@ -67,7 +68,11 @@ const purchaseSchema = new mongoose.Schema(
         required:true,
     },
 }, 
-{timestamp: true}
+
+{timestamps:{
+    createdAt: "created_at", 
+    updatedAt: "updated_at" 
+  }}
 );
 
 export default mongoose.model("purchase", purchaseSchema)

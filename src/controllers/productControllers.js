@@ -49,7 +49,10 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                     $match:(
                     {$or:[
                         {
-                            category:req.query.category, 
+                            category:{
+                                $regex:req.query.category, 
+                                $options:"i",//ignora o case sensitive da busca
+                            }
                         },
                         {
                             stock:parseInt(req.query.stock),
