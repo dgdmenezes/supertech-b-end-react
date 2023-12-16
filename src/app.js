@@ -21,7 +21,4 @@ app.use("/address", addressRoutes)
 import puchaseRoutes from "./routes/puchaseRoutes.js"
 app.use("/purchase", puchaseRoutes)
 
-import paymentRoutes from "./routes/paymentRoutes.js"
-app.use("/payment", paymentRoutes)
-
 export default app;
