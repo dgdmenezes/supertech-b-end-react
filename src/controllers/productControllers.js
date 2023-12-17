@@ -1,3 +1,4 @@
+import productSchema from "../models/productSchema.js"
 import ProductSchema from "../models/productSchema.js"
 
 const getAllP =  (req, res) =>{
@@ -67,7 +68,7 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                     res.status(500).send({message: err.message})
                 }
                 res.status(200).send(products)
-                console.log(req.query, products.length);
+                console.log(req.query, products.length)
                 
                 
             })
@@ -79,7 +80,10 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                         $match:(
                         {$or:[
                             {
-                                category:req.query.category, 
+                                category:{
+                                    $regex:req.query.category, 
+                                    $options:"i",//ignora o case sensitive da busca
+                                }
                             },
                             {
                                 stock:parseInt(req.query.stock),
@@ -98,6 +102,20 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                     
                 })
             }
+        
+        const categoryAutomaticList = async (req,res) =>{
+            try {
+                const result = await productSchema.aggregate([
+                    { $group: {_id:"$category", count:{ $sum: 1 } } },
+                    { $match: { count: { $gt: 0 } } }
+                ])
+            
+            res.status(200).send(result)
+            } catch (error) {
+                console.log("Erro ao listar categorias", error);
+                res.status(500).send({error:error})
+            }
+        }
             
         const searchBarProductFind =  (req, res) =>{
             ProductSchema.aggregate([
@@ -224,4 +242,5 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
     productFindCount,
     searchBarProductFind,
     searchBarProductFindCount,
+    categoryAutomaticList,
  }
