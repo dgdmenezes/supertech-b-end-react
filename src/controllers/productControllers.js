@@ -137,9 +137,10 @@ const getIndexHome =  (req, res) =>{ //--> route "/index/index?"
                     ]).exec((err, products) =>{
                         if (err){
                             res.status(500).send({message: err.message})
+                            
                         }
                         res.status(200).send(products)
-                        console.log(req.query, products.length);
+                        console.log(req.query, products.length, req.query.tags);
                         
                         
                     })
